@@ -1,6 +1,4 @@
 import React, {useCallback, useState, useEffect} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../App';
 import {
   Alert,
   Pressable,
@@ -10,46 +8,52 @@ import {
   View,
 } from 'react-native';
 
-type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'AddId'>;
+function Password() {
+  const [password, setPassword] = useState('');
 
-function SignUp({navigation}: SignUpScreenProps) {
-  const [phoneNum, setPhoneNum] = useState('');
+  const onChangePassword = useCallback(
+    text => {
+      setPassword(text.trim());
+    },
+    [password],
+  );
 
-  useEffect(() => {
-    if (phoneNum.length === 11) {
-      setPhoneNum(
-        phoneNum.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
+  const onSubmit = useCallback(() => {
+    if (!/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@^!%*#?&]).{8,16}$/.test(password)) {
+      return Alert.alert(
+        '알림',
+        '비밀번호는 영문,숫자,특수문자를 포함하여 8자 이상 16자리 이하로 입력하세요',
       );
     }
-  }, [phoneNum]);
-
-  const toAddId = useCallback(() => {
-    // if (!phoneNum) {
-    //   return Alert.alert('알림', '번호를 입력해주세요');
-    // }
-    navigation.navigate('AddId');
-  }, [navigation]);
+    Alert.alert('알림', '회원가입 완료');
+  }, [password]);
 
   return (
     <View style={styles.NumberWrapper}>
       <View>
-        <Text style={styles.title}>기기 전화번호를 입력해 주세요.</Text>
+        <Text style={styles.title}>비밀번호 설정</Text>
       </View>
       <View>
-        <Text>아무 핸드폰 번호 입력하면 넘어가지롱 ㅋ</Text>
+        <Text>
+          비밀번호는 최소 6자리에 영문자와 숫자가 최소 하나씩 포함되어야 합니다.
+        </Text>
         <TextInput
-          onChangeText={text => setPhoneNum(text)}
-          keyboardType={'numeric'}
-          value={phoneNum.toString()}
+          value={password}
           style={styles.numberInput}
-          placeholder="전화번호 입력"
-          maxLength={13}
+          placeholder="비밀번호 입력"
+          onChangeText={onChangePassword}
         />
+        {/* <TextInput
+          onChangeText={text => setUserName(text)}
+          value={userName}
+          style={styles.numberInput}
+          placeholder="비밀번호 다시 입력"
+        /> */}
       </View>
       <View style={styles.nextBtnWrapper}>
         <Pressable
-          onPress={toAddId}
-          style={!phoneNum ? styles.nextBtn : styles.nextGreenBtn}>
+          onPress={onSubmit}
+          style={!password ? styles.nextBtn : styles.nextGreenBtn}>
           <Text style={styles.nextBtnTxt}>-&gt;</Text>
         </Pressable>
       </View>
@@ -99,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default Password;

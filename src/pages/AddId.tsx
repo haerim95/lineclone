@@ -1,8 +1,15 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../App';
 
-function AddId() {
+type AddIdScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
+function AddId({navigation}: AddIdScreenProps) {
   const [userName, setUserName] = useState('');
+
+  const toPassword = useCallback(() => {
+    navigation.navigate('Password');
+  }, [navigation]);
 
   return (
     <View style={styles.NumberWrapper}>
@@ -18,9 +25,11 @@ function AddId() {
           placeholder="사용자 이름 입력"
         />
       </View>
-      <View>
-        <Pressable style={styles.nextBtn}>
-          <Text>-&gt;</Text>
+      <View style={styles.nextBtnWrapper}>
+        <Pressable
+          onPress={toPassword}
+          style={!userName ? styles.nextBtn : styles.nextGreenBtn}>
+          <Text style={styles.nextBtnTxt}>-&gt;</Text>
         </Pressable>
       </View>
     </View>
@@ -45,10 +54,27 @@ const styles = StyleSheet.create({
     fontSize: 24,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  nextBtnWrapper: {
+    alignItems: 'flex-end',
+  },
   nextBtn: {
-    padding: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
     borderRadius: 50,
     backgroundColor: '#cccccc',
+  },
+  nextBtnTxt: {
+    fontSize: 24,
+    textAlign: 'center',
+    color: '#ffffff',
+  },
+  nextGreenBtn: {
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    borderRadius: 50,
+    backgroundColor: '#1FC46E',
   },
 });
 
