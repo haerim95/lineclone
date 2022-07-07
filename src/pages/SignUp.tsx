@@ -23,7 +23,7 @@ function SignUp({navigation}: SignUpScreenProps) {
     }
   }, [phoneNum]);
   // test
-
+  // test2
   const toAddId = useCallback(() => {
     // if (!phoneNum) {
     //   return Alert.alert('알림', '번호를 입력해주세요');
