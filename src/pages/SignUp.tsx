@@ -22,6 +22,7 @@ function SignUp({navigation}: SignUpScreenProps) {
       );
     }
   }, [phoneNum]);
+  // test
 
   const toAddId = useCallback(() => {
     // if (!phoneNum) {
